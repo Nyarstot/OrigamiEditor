@@ -1,0 +1,68 @@
+.menu-bar {
+    -fx-background-color: #242424;
+}
+
+.menu-bar .label {
+    -fx-text-fill: white;
+}
+
+.menu {
+
+}
+
+.menu:hover {
+    -fx-background-color: #4b6eaf;
+}
+
+.context-menu {
+    -fx-background-color: #1b1b1b;
+    -fx-border-color: #535353;
+}
+
+.menu-bar .menu-button:hover, .menu-bar .menu-button:focused, .menu-bar .menu-button:showing {
+    -fx-background: #4b6eaf;
+    -fx-text-fill: white;
+}
+
+.context-menu .menu-item:hover {
+    -fx-background-color: #4b6eaf;
+}
+
+.split-pane {
+    -fx-background-color: #242424;
+}
+
+.split-pane .split-pane-divider {
+    -fx-color: transparent;
+    -fx-background-color: #0D0D0D;
+    -fx-padding: 0 2px 0 2px;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #0D0D0D;
+}
+
+.tab-label {
+    -fx-text-fill: white;
+}
+
+.tab {
+    -fx-background-radius: 0;
+    -fx-background-color: #323232;
+}
+
+.tab:selected {
+    -fx-background-color: #4b6eaf;
+    -fx-background-insets: 1;
+}
+
+.text-area {
+    -fx-control-inner-background: #1b1b1b;
+    -fx-font-size: 12pt;
+    -fx-font-family: "Consolas";
+    -fx-background-insets: 1;
+}
+
+.text-area .content {
+    -fx-background-color: transparent, #1b1b1b, transparent, #1b1b1b;
+}
