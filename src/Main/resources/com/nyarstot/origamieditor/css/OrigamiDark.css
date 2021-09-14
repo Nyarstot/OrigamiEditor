@@ -1,5 +1,9 @@
+VBox {
+    -fx-background-color: #0D0D0D;
+}
+
 .menu-bar {
-    -fx-background-color: #242424;
+    -fx-background-color: #3c3c3c;
 }
 
 .menu-bar .label {
@@ -29,12 +33,13 @@
 }
 
 .split-pane {
-    -fx-background-color: #242424;
+    -fx-background-color: #252526;
+    -fx-margin-color: red;
 }
 
 .split-pane .split-pane-divider {
     -fx-color: transparent;
-    -fx-background-color: #0D0D0D;
+    -fx-background-color: #222222;
     -fx-padding: 0 2px 0 2px;
 }
 
@@ -65,4 +70,17 @@
 
 .text-area .content {
     -fx-background-color: transparent, #1b1b1b, transparent, #1b1b1b;
+}
+
+.button-bar {
+    -fx-background-color: #3c3c3c;
+}
+
+.button-bar .menu-button {
+    -fx-background-color: #3E3E3E;
+    -fx-background-radius: 0;
+}
+
+.button-bar .menu-button .label {
+    -fx-text-fill: white;
 }
