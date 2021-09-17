@@ -22,7 +22,10 @@ public class EditorModel {
 
     public void save(TextFile file) {
         try {
-            Files.write(file.getFilePath(), file.getContent(), StandardOpenOption.CREATE_NEW);
+            Files.write(file.getFilePath(), file.getContent(),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.WRITE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
         }

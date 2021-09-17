@@ -1,13 +1,12 @@
 package com.nyarstot.origamieditor;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
+import javafx.stage.FileChooser;
+
 import com.nyarstot.origamieditor.logic.EditorModel;
 import com.nyarstot.origamieditor.logic.IOResult;
 import com.nyarstot.origamieditor.logic.TextFile;
-
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.Arrays;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 public class OrigamiMainUiController {
     @FXML
     private TextArea textArea;
-    private TextFile currentTextFile;
+    private TextFile currentTextFile = new TextFile();
     private final EditorModel editorModel;
 
     public OrigamiMainUiController(EditorModel editorModel) {
@@ -48,12 +47,38 @@ public class OrigamiMainUiController {
     @FXML
     private void onSave()
     {
-        TextFile textFile = new TextFile(currentTextFile.getFilePath(),
-                Arrays.asList(textArea.getText().split("\n")));
-        editorModel.save(textFile);
+        if (currentTextFile.getFilePath() != null) {
+            TextFile textFile = new TextFile(currentTextFile.getFilePath(),
+                    Arrays.asList(textArea.getText().split("\n")));
+            editorModel.save(textFile);
+
+            currentTextFile = textFile;
+        } else { onSaveAs(); }
+    }
+
+    @FXML
+    private void onSaveAs()
+    {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save as");
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            TextFile textFile = new TextFile(file.toPath(),
+                    Arrays.asList(textArea.getText().split("\n")));
+            editorModel.save(textFile);
+
+            currentTextFile = textFile;
+        }
     }
 
     @FXML
     private void onClose() { editorModel.close(0); }
 
+    @FXML
+    private void onNew()
+    {
+        textArea.clear();
+        currentTextFile.clear();
+    }
 }
