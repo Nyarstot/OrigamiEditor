@@ -1,5 +1,6 @@
 package com.nyarstot.origamieditor;
 
+import com.nyarstot.origamieditor.textArea.CodeHighlightDocument;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
@@ -7,18 +8,45 @@ import javafx.stage.FileChooser;
 import com.nyarstot.origamieditor.logic.EditorModel;
 import com.nyarstot.origamieditor.logic.IOResult;
 import com.nyarstot.origamieditor.logic.TextFile;
+import com.nyarstot.origamieditor.textArea.TextHighlighter;
+
+import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.LineNumberFactory;
 
 import java.io.File;
 import java.util.Arrays;
 
-public class OrigamiMainUiController {
+/**
+ * @author Kozlov Nikita;
+ * */
+
+public class OrigamiMainController {
     @FXML
+    // Private
     private TextArea textArea;
     private TextFile currentTextFile = new TextFile();
+    private CodeHighlightDocument codeHighlightDocument = new CodeHighlightDocument();
     private final EditorModel editorModel;
+    // Public
+    public CodeArea codeArea;
 
-    public OrigamiMainUiController(EditorModel editorModel) {
+    public OrigamiMainController(EditorModel editorModel) {
         this.editorModel = editorModel;
+    }
+
+    @FXML
+    public void initialize()
+    {
+        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
+        File file = new File("C:\\Users\\winte\\source\\Java\\OrigamiEditor\\src\\main\\resources\\com\\nyarstot\\origamieditor\\highlightings\\java.xml");
+        codeHighlightDocument.load(file);
+    }
+
+    @FXML
+    private void onNew()
+    {
+        codeArea.clear();
+        currentTextFile.clear();
     }
 
     @FXML
@@ -35,10 +63,11 @@ public class OrigamiMainUiController {
             if (ioResult.s_ok() && ioResult.hasData()) {
                 currentTextFile = ioResult.getData();
 
-                textArea.clear();
-                currentTextFile.getContent().forEach(line -> textArea.appendText(line + "\n"));
+                codeArea.clear();
+                currentTextFile.getContent().forEach(line -> codeArea.appendText(line+"\n"));
             }
-            else {
+            else
+            {
                 System.out.println("Failed");
             }
         }
@@ -49,7 +78,7 @@ public class OrigamiMainUiController {
     {
         if (currentTextFile.getFilePath() != null) {
             TextFile textFile = new TextFile(currentTextFile.getFilePath(),
-                    Arrays.asList(textArea.getText().split("\n")));
+                    Arrays.asList(codeArea.getText().split("\n")));
             editorModel.save(textFile);
 
             currentTextFile = textFile;
@@ -65,7 +94,7 @@ public class OrigamiMainUiController {
 
         if (file != null) {
             TextFile textFile = new TextFile(file.toPath(),
-                    Arrays.asList(textArea.getText().split("\n")));
+                    Arrays.asList(codeArea.getText().split("\n")));
             editorModel.save(textFile);
 
             currentTextFile = textFile;
@@ -74,11 +103,4 @@ public class OrigamiMainUiController {
 
     @FXML
     private void onClose() { editorModel.close(0); }
-
-    @FXML
-    private void onNew()
-    {
-        textArea.clear();
-        currentTextFile.clear();
-    }
 }

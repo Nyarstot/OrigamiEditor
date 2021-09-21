@@ -38,6 +38,12 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.fxmisc.richtext</groupId>
+            <artifactId>richtextfx</artifactId>
+            <version>0.10.6</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -60,7 +66,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.origamieditor/com.nyarstot.origamieditor.OrigamiMainUi</mainClass>
+                            <mainClass>com.origamieditor/com.nyarstot.origamieditor.OrigamiMain</mainClass>
                         </configuration>
                     </execution>
                 </executions>
