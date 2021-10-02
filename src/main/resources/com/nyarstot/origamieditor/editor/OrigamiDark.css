@@ -68,7 +68,7 @@ VBox {
     -fx-background-insets: 1;
 }
 
-.code-area .content {
+.code-area .text {
     -fx-fill: white;
 }
 

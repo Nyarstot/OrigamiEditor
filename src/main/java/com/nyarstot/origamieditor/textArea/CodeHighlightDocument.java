@@ -1,17 +1,7 @@
 package com.nyarstot.origamieditor.textArea;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Locale;
-import java.util.Objects;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import com.nyarstot.origamieditor.textArea.CodeHighlightDocumentParser;
 
 /**
  * @author Kozlov Nikita
@@ -26,24 +16,23 @@ public class CodeHighlightDocument {
     private String[]    highlightExtensions;
     private String[]    highlightKeywords;
 
+    private CodeHighlightDocumentParser parser = new CodeHighlightDocumentParser();
+
     // Public
+    public CodeHighlightDocument() {
+
+    }
+    public CodeHighlightDocument(File file) {
+        load(file);
+    }
+
+    public String[] getHighlightKeywords()      { return this.highlightKeywords; }
+    public String[] getHighlightExtensions()    { return this.highlightExtensions; }
+    public File getHighlightDocument()          { return this.highlightDocument; }
+    public File getHighlightStyle()             { return this.highlightStyle; }
 
     public void load(File file) {
-        DocumentBuilder         documentBuilder;
-        DocumentBuilderFactory  documentBuilderFactory;
-        Document                document;
-
-        try {
-            documentBuilderFactory  = DocumentBuilderFactory.newInstance();
-            documentBuilder         = documentBuilderFactory.newDocumentBuilder();
-            document                = documentBuilder.parse(file);
-
-            NodeList nodeList = document.getElementsByTagName("keywords");
-
-
-        } catch (ParserConfigurationException
-                | IOException | SAXException e) {
-            e.printStackTrace();
-        }
+        this.highlightDocument = file;
+        parser.parse(this.highlightDocument);
     }
 }
