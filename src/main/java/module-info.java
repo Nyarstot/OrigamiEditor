@@ -2,10 +2,8 @@ module com.origamieditor {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.fxmisc.richtext;
-    requires flowless;
     requires reactfx;
     requires java.xml;
-    requires jdom2;
 
 
     opens com.nyarstot.origamieditor to javafx.fxml;
