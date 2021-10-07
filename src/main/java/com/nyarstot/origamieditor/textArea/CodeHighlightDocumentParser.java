@@ -10,7 +10,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class CodeHighlightDocumentParser {
     // private
@@ -21,10 +22,23 @@ public class CodeHighlightDocumentParser {
 
     private String[]    extensions;
     private String[]    keywords;
-    private File        style;
+    private Path style;
 
-    private void xmlStringDataToStringArray (String[] stringArr, String nodeName, Node node) {
-
+    private void xmlArrayDataToFileMeta (String nodeName, Node node) {
+        if (node.getNodeName().equals(nodeName)) {
+            NodeList nodeList = node.getChildNodes();
+            String[] stringArr = new String[nodeList.getLength()/2];
+            int tmpCounter = 1;
+            for (int i = 1; i < nodeList.getLength(); i++) {
+                Node currNode = nodeList.item(i);
+                if (currNode.getNodeType() == Node.ELEMENT_NODE) {
+                    stringArr[i - tmpCounter] = currNode.getTextContent();
+                    tmpCounter++;
+                }
+            }
+            if (nodeName.equals("keywords")) {this.keywords = stringArr; };
+            if (nodeName.equals("fileExtensions")) {this.extensions = stringArr; };
+        }
     };
 
     // public
@@ -32,10 +46,17 @@ public class CodeHighlightDocumentParser {
         try {
             documentBuilderFactory  = DocumentBuilderFactory.newInstance();
             documentBuilder         = documentBuilderFactory.newDocumentBuilder();
+
+            this.extensions = new String[0];
+            this.keywords   = new String[0];
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
     }
+
+    public String[] getKeywords()   { return this.keywords; }
+    public String[] getExtensions() { return this.extensions; }
+    public Path getStyle()          { return this.style; }
 
     public void parse(File xmlFile) {
         try {
@@ -51,26 +72,15 @@ public class CodeHighlightDocumentParser {
             for (int i = 0; i < root.getLength(); i++) {
                 Node tmpItemNode = root.item(i);
                 if (tmpItemNode.getNodeType() == Node.ELEMENT_NODE) {
-
-                    if (tmpItemNode.getNodeName().equals("keywords")) {
-                        NodeList keys = tmpItemNode.getChildNodes();
-                        int tmpCounter = 1;
-                        keywords = new String[keys.getLength()/2];
-                        for (int j = 1; j < keys.getLength(); j+=2) {
-                            Node key = keys.item(j);
-                            if (key.getNodeType() == Node.ELEMENT_NODE) {
-                                keywords[j - tmpCounter] = key.getTextContent();
-                                tmpCounter++;
-                            }
-                        }
+                    xmlArrayDataToFileMeta("fileExtensions", tmpItemNode);
+                    xmlArrayDataToFileMeta("keywords", tmpItemNode);
+                    if (tmpItemNode.getNodeName().equals("style")) {
+                        NodeList styleNode = tmpItemNode.getChildNodes();
+                        this.style = Paths.get(styleNode.item(1).getTextContent());
                     }
-
                 }
             }
 
-            for (int i = 0; i < keywords.length; i++) {
-                System.out.println(keywords[i]);
-            }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }

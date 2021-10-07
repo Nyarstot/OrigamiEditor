@@ -1,7 +1,7 @@
 package com.nyarstot.origamieditor.textArea;
 
 import java.io.File;
-import com.nyarstot.origamieditor.textArea.CodeHighlightDocumentParser;
+import java.nio.file.Path;
 
 /**
  * @author Kozlov Nikita
@@ -11,7 +11,7 @@ public class CodeHighlightDocument {
     // Private
 
     private File        highlightDocument;
-    private File        highlightStyle;
+    private Path        highlightStyle;
 
     private String[]    highlightExtensions;
     private String[]    highlightKeywords;
@@ -29,10 +29,14 @@ public class CodeHighlightDocument {
     public String[] getHighlightKeywords()      { return this.highlightKeywords; }
     public String[] getHighlightExtensions()    { return this.highlightExtensions; }
     public File getHighlightDocument()          { return this.highlightDocument; }
-    public File getHighlightStyle()             { return this.highlightStyle; }
+    public Path getHighlightStyle()             { return this.highlightStyle; }
 
     public void load(File file) {
         this.highlightDocument = file;
         parser.parse(this.highlightDocument);
+
+        this.highlightExtensions    = parser.getExtensions();
+        this.highlightKeywords      = parser.getKeywords();
+        this.highlightStyle         = parser.getStyle();
     }
 }
