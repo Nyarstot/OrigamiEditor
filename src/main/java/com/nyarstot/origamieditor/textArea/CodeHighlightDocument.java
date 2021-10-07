@@ -16,7 +16,7 @@ public class CodeHighlightDocument {
     private String[]    highlightExtensions;
     private String[]    highlightKeywords;
 
-    private CodeHighlightDocumentParser parser = new CodeHighlightDocumentParser();
+    private final CodeHighlightDocumentParser parser = new CodeHighlightDocumentParser();
 
     // Public
     public CodeHighlightDocument() {

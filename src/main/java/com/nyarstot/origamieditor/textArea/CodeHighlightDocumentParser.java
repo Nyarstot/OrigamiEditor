@@ -1,73 +1,79 @@
 package com.nyarstot.origamieditor.textArea;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-import com.nyarstot.origamieditor.textArea.CodeHighlightDocument;
-
 public class CodeHighlightDocumentParser {
-    // Private
+    // private
 
-    private DocumentBuilderFactory documentBuilderFactory = null;
-    private DocumentBuilder documentBuilder               = null;
-    private Document document                             = null;
+    DocumentBuilder documentBuilder                 = null;
+    DocumentBuilderFactory documentBuilderFactory   = null;
+    Document document                               = null;
 
     private String[]    extensions;
     private String[]    keywords;
     private File        style;
 
-    // Public
+    private void xmlStringDataToStringArray (String[] stringArr, String nodeName, Node node) {
 
-    public CodeHighlightDocumentParser() {
+    };
+
+    // public
+    CodeHighlightDocumentParser() {
         try {
-            this.documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            this.documentBuilder = this.documentBuilderFactory.newDocumentBuilder();
-        }
-        catch (ParserConfigurationException e) {
+            documentBuilderFactory  = DocumentBuilderFactory.newInstance();
+            documentBuilder         = documentBuilderFactory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
     }
 
     public void parse(File xmlFile) {
         try {
-            this.document = this.documentBuilder.parse(xmlFile);
-            this.document.getDocumentElement().normalize();
+            if (documentBuilderFactory == null) {
+                documentBuilderFactory  = DocumentBuilderFactory.newInstance();
+                documentBuilder         = documentBuilderFactory.newDocumentBuilder();
+            }
 
-            Element root = this.document.getDocumentElement();
-            System.out.println(root.getNodeName());
+            document = documentBuilder.parse(xmlFile);
+            document.getDocumentElement().normalize();
 
-            NodeList highlightAttributes = root.getChildNodes();
-            for (int i = 0; i < highlightAttributes.getLength(); i++) {
-                Node currNode = highlightAttributes.item(i);
-                if (currNode.getNodeType() == Node.ELEMENT_NODE) {
+            NodeList root = document.getDocumentElement().getChildNodes();
+            for (int i = 0; i < root.getLength(); i++) {
+                Node tmpItemNode = root.item(i);
+                if (tmpItemNode.getNodeType() == Node.ELEMENT_NODE) {
 
-                    if (Objects.equals(currNode.getNodeName(), "keywords")) {
-                        NodeList keys = currNode.getChildNodes();
-                        this.keywords = new String[keys.getLength()];
-                        for (int j = 0; j < keys.getLength(); j++) {
+                    if (tmpItemNode.getNodeName().equals("keywords")) {
+                        NodeList keys = tmpItemNode.getChildNodes();
+                        int tmpCounter = 1;
+                        keywords = new String[keys.getLength()/2];
+                        for (int j = 1; j < keys.getLength(); j+=2) {
                             Node key = keys.item(j);
                             if (key.getNodeType() == Node.ELEMENT_NODE) {
-                                this.keywords[j-1] =   key.getTextContent();
+                                keywords[j - tmpCounter] = key.getTextContent();
+                                tmpCounter++;
                             }
                         }
                     }
 
                 }
             }
+
             for (int i = 0; i < keywords.length; i++) {
                 System.out.println(keywords[i]);
             }
-        } catch (SAXException | IOException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
     }
+
 }

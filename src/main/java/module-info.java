@@ -5,6 +5,7 @@ module com.origamieditor {
     requires flowless;
     requires reactfx;
     requires java.xml;
+    requires jdom2;
 
 
     opens com.nyarstot.origamieditor to javafx.fxml;
