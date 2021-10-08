@@ -55,6 +55,14 @@
         <key>volatile</key>
         <key>while</key>
     </keywords>
+    <highlightPatterns>
+        <parenPattern>\\(|\\)</parenPattern>
+        <bracePattern>\\{|\\}</bracePattern>
+        <bracketPattern>\\[|\\]</bracketPattern>
+        <semicolonPattern>\\;</semicolonPattern>
+        <stringPattern>\"([^\"\\\\]|\\\\.)*\"</stringPattern>
+        <commentPattern>//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/" + "|" + "/\\*[^\\v]*" + "|" + "^\\h*\\*([^\\v]*|/)";</commentPattern>
+    </highlightPatterns>
     <style>
         <fileName>java.css</fileName>
     </style>

@@ -16,6 +16,14 @@ public class CodeHighlightDocument {
     private String[]    highlightExtensions;
     private String[]    highlightKeywords;
 
+    private String keywordPattern;
+    private String parenPattern;
+    private String bracePattern;
+    private String bracketPattern;
+    private String semicolonPattern;
+    private String stringPattern;
+    private String commentPattern;
+
     private final CodeHighlightDocumentParser parser = new CodeHighlightDocumentParser();
 
     // Public
@@ -38,5 +46,14 @@ public class CodeHighlightDocument {
         this.highlightExtensions    = parser.getExtensions();
         this.highlightKeywords      = parser.getKeywords();
         this.highlightStyle         = parser.getStyle();
+
+        this.keywordPattern         = "\\b(" + String.join("|", this.highlightKeywords) + ")\\b";
+
+        this.parenPattern           = parser.getParenPattern();
+        this.bracePattern           = parser.getBracePattern();
+        this.bracketPattern         = parser.getBracketPattern();
+        this.semicolonPattern       = parser.getSemicolonPattern();
+        this.stringPattern          = parser.getStringPattern();
+        this.commentPattern         = parser.getCommentPattern();
     }
 }

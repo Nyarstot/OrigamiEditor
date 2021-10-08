@@ -4,6 +4,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Document;
@@ -12,10 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 public class CodeHighlightDocumentParser {
     // private
-
     DocumentBuilder documentBuilder                 = null;
     DocumentBuilderFactory documentBuilderFactory   = null;
     Document document                               = null;
@@ -23,6 +24,13 @@ public class CodeHighlightDocumentParser {
     private String[]    extensions;
     private String[]    keywords;
     private Path style;
+
+    private String parenPattern;
+    private String bracePattern;
+    private String bracketPattern;
+    private String semicolonPattern;
+    private String stringPattern;
+    private String commentPattern;
 
     private void xmlArrayDataToFileMeta (String nodeName, Node node) {
         if (node.getNodeName().equals(nodeName)) {
@@ -40,6 +48,17 @@ public class CodeHighlightDocumentParser {
             if (nodeName.equals("fileExtensions")) {this.extensions = stringArr; };
         }
     };
+    private void parseHighlightRules(Node node) {
+        if (Objects.equals(node.getNodeName(), "highlightPatterns")) {
+            Element element = (Element) node;
+            this.parenPattern = element.getElementsByTagName("parenPattern").item(0).getTextContent();
+            this.bracePattern = element.getElementsByTagName("bracePattern").item(0).getTextContent();
+            this.bracketPattern = element.getElementsByTagName("bracketPattern").item(0).getTextContent();
+            this.semicolonPattern = element.getElementsByTagName("semicolonPattern").item(0).getTextContent();
+            this.stringPattern = element.getElementsByTagName("stringPattern").item(0).getTextContent();
+            this.commentPattern = element.getElementsByTagName("commentPattern").item(0).getTextContent();
+        }
+    }
 
     // public
     CodeHighlightDocumentParser() {
@@ -54,9 +73,15 @@ public class CodeHighlightDocumentParser {
         }
     }
 
-    public String[] getKeywords()   { return this.keywords; }
-    public String[] getExtensions() { return this.extensions; }
-    public Path getStyle()          { return this.style; }
+    public String[] getKeywords()       { return this.keywords; }
+    public String[] getExtensions()     { return this.extensions; }
+    public Path getStyle()              { return this.style; }
+    public String getParenPattern()     { return this.parenPattern; }
+    public String getBracePattern()     { return this.bracePattern; }
+    public String getBracketPattern()   { return this.bracketPattern; }
+    public String getSemicolonPattern() { return this.semicolonPattern; }
+    public String getStringPattern()    { return this.stringPattern; }
+    public String getCommentPattern()   { return this.commentPattern; }
 
     public void parse(File xmlFile) {
         try {
@@ -74,13 +99,13 @@ public class CodeHighlightDocumentParser {
                 if (tmpItemNode.getNodeType() == Node.ELEMENT_NODE) {
                     xmlArrayDataToFileMeta("fileExtensions", tmpItemNode);
                     xmlArrayDataToFileMeta("keywords", tmpItemNode);
+                    parseHighlightRules(tmpItemNode);
                     if (tmpItemNode.getNodeName().equals("style")) {
                         NodeList styleNode = tmpItemNode.getChildNodes();
                         this.style = Paths.get(styleNode.item(1).getTextContent());
                     }
                 }
             }
-
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
