@@ -1,7 +1,8 @@
-package com.nyarstot.origamieditor.textArea;
+package com.nyarstot.origamieditor.codehighlighter;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.regex.Pattern;
 
 /**
  * @author Kozlov Nikita
@@ -16,13 +17,7 @@ public class CodeHighlightDocument {
     private String[]    highlightExtensions;
     private String[]    highlightKeywords;
 
-    private String keywordPattern;
-    private String parenPattern;
-    private String bracePattern;
-    private String bracketPattern;
-    private String semicolonPattern;
-    private String stringPattern;
-    private String commentPattern;
+    private Pattern highlightPattern;
 
     private final CodeHighlightDocumentParser parser = new CodeHighlightDocumentParser();
 
@@ -38,6 +33,7 @@ public class CodeHighlightDocument {
     public String[] getHighlightExtensions()    { return this.highlightExtensions; }
     public File getHighlightDocument()          { return this.highlightDocument; }
     public Path getHighlightStyle()             { return this.highlightStyle; }
+    public Pattern getHighlightPattern()        { return this.highlightPattern; }
 
     public void load(File file) {
         this.highlightDocument = file;
@@ -47,13 +43,6 @@ public class CodeHighlightDocument {
         this.highlightKeywords      = parser.getKeywords();
         this.highlightStyle         = parser.getStyle();
 
-        this.keywordPattern         = "\\b(" + String.join("|", this.highlightKeywords) + ")\\b";
-
-        this.parenPattern           = parser.getParenPattern();
-        this.bracePattern           = parser.getBracePattern();
-        this.bracketPattern         = parser.getBracketPattern();
-        this.semicolonPattern       = parser.getSemicolonPattern();
-        this.stringPattern          = parser.getStringPattern();
-        this.commentPattern         = parser.getCommentPattern();
+        this.highlightPattern       = parser.getHighlightPattern();
     }
 }

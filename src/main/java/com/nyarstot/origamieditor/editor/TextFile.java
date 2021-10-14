@@ -1,13 +1,16 @@
-package com.nyarstot.origamieditor.logic;
+package com.nyarstot.origamieditor.editor;
 
 import java.nio.file.Path;
 import java.util.List;
 
 public class TextFile {
     // Private
+
     private Path filePath;
     private List<String> content;
+
     // Public
+
     public TextFile(Path filePath, List<String> content)
     {
         this.filePath = filePath;

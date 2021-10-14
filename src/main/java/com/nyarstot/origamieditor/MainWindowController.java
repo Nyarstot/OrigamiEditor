@@ -1,15 +1,11 @@
 package com.nyarstot.origamieditor;
 
-import com.nyarstot.origamieditor.textArea.CodeHighlightDocument;
+import com.nyarstot.origamieditor.codehighlighter.CodeHighlightDocument;
+import com.nyarstot.origamieditor.editor.OrigamiFileControllerFactory;
+import com.nyarstot.origamieditor.editor.TextFile;
+import com.nyarstot.origamieditor.util.IOResult;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
-
-import com.nyarstot.origamieditor.logic.EditorModel;
-import com.nyarstot.origamieditor.logic.IOResult;
-import com.nyarstot.origamieditor.logic.TextFile;
-import com.nyarstot.origamieditor.textArea.TextHighlighter;
-
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 
@@ -20,17 +16,16 @@ import java.util.Arrays;
  * @author Kozlov Nikita;
  * */
 
-public class OrigamiMainController {
+public class MainWindowController {
     @FXML
     // Private
-    private TextArea textArea;
     private TextFile currentTextFile = new TextFile();
     private CodeHighlightDocument codeHighlightDocument = new CodeHighlightDocument();
-    private final EditorModel editorModel;
+    private final OrigamiFileControllerFactory editorModel;
     // Public
     public CodeArea codeArea;
 
-    public OrigamiMainController(EditorModel editorModel) {
+    public MainWindowController(OrigamiFileControllerFactory editorModel) {
         this.editorModel = editorModel;
     }
 
@@ -41,6 +36,8 @@ public class OrigamiMainController {
         File file = new File("C:\\Users\\winte\\source\\Java\\OrigamiEditor\\src\\main\\resources\\com\\nyarstot\\origamieditor\\highlightings\\java.xml");
         codeHighlightDocument.load(file);
     }
+
+    // File handlers
 
     @FXML
     private void onNew()

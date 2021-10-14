@@ -1,4 +1,4 @@
-package com.nyarstot.origamieditor.logic;
+package com.nyarstot.origamieditor.util;
 
 public class IOResult<T> {
     // Private

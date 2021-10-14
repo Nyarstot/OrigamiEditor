@@ -1,19 +1,20 @@
-package com.nyarstot.origamieditor.textArea;
+package com.nyarstot.origamieditor.codehighlighter;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class CodeHighlightDocumentParser {
     // private
@@ -23,8 +24,9 @@ public class CodeHighlightDocumentParser {
 
     private String[]    extensions;
     private String[]    keywords;
-    private Path style;
+    private Path        style;
 
+    private String keywordPattern;
     private String parenPattern;
     private String bracePattern;
     private String bracketPattern;
@@ -83,6 +85,17 @@ public class CodeHighlightDocumentParser {
     public String getStringPattern()    { return this.stringPattern; }
     public String getCommentPattern()   { return this.commentPattern; }
 
+    public Pattern getHighlightPattern() {
+        return Pattern.compile(
+                "(?<KEYWORD>" + this.keywordPattern + ")"
+                        + "|(?<PAREN>" + this.parenPattern + ")"
+                        + "|(?<BRACE>" + this.bracePattern + ")"
+                        + "|(?<BRACKET>" + this.bracketPattern + ")"
+                        + "|(?<SEMICOLON>" + this.semicolonPattern + ")"
+                        + "|(?<STRING>" + this.stringPattern + ")"
+                        + "|(?<COMMENT>" + this.commentPattern + ")"
+        );
+    }
     public void parse(File xmlFile) {
         try {
             if (documentBuilderFactory == null) {
@@ -106,9 +119,10 @@ public class CodeHighlightDocumentParser {
                     }
                 }
             }
+
+            this.keywordPattern = "\\b(" + String.join("|", this.keywords) + ")\\b";
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
     }
-
 }

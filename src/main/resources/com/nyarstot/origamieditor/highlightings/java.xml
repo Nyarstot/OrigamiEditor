@@ -57,7 +57,7 @@
     </keywords>
     <highlightPatterns>
         <parenPattern>\\(|\\)</parenPattern>
-        <bracePattern>\\{|\\}</bracePattern>
+        <bracePattern>\\\{|\\\}</bracePattern>
         <bracketPattern>\\[|\\]</bracketPattern>
         <semicolonPattern>\\;</semicolonPattern>
         <stringPattern>\"([^\"\\\\]|\\\\.)*\"</stringPattern>

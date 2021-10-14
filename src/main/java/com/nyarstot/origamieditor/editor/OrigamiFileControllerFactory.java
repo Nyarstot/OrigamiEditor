@@ -1,4 +1,7 @@
-package com.nyarstot.origamieditor.logic;
+package com.nyarstot.origamieditor.editor;
+
+import com.nyarstot.origamieditor.editor.TextFile;
+import com.nyarstot.origamieditor.util.IOResult;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -6,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
-public class EditorModel {
+public class OrigamiFileControllerFactory {
     // Private
 
     // Public
