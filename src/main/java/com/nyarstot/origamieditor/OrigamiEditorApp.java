@@ -15,14 +15,6 @@ public class OrigamiEditorApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        /*FXMLLoader fxmlLoader = new FXMLLoader(OrigamiEditorApp.class.getResource("OrigamiMain-view.fxml"));
-        fxmlLoader.setControllerFactory(t -> new MainWindowController(new EditorModel()));
-        Scene scene = new Scene(fxmlLoader.load(), 1089, 786);
-
-        stage.setTitle("Origami Editor");
-        stage.setScene(scene);
-        stage.show();*/
-
         mainWindow = new MainWindow();
 
         primaryStage.setTitle("Origami Editor");
