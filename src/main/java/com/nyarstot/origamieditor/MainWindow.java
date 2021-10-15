@@ -3,22 +3,15 @@ package com.nyarstot.origamieditor;
 import com.nyarstot.origamieditor.codehighlighter.CodeHighlightDocument;
 import com.nyarstot.origamieditor.codehighlighter.CodeHighlighterAsync;
 import com.nyarstot.origamieditor.editor.OrigamiTextArea;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import org.reactfx.Subscription;
 
 import java.io.File;
-import java.time.Duration;
-import java.util.Optional;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.prefs.Preferences;
 
 public class MainWindow {
     // Private
@@ -37,7 +30,7 @@ public class MainWindow {
     MainWindow() {
         executor = Executors.newSingleThreadExecutor();
         codeHighlightDocument =
-                new CodeHighlightDocument(new File("C:\\Users\\winte\\source\\Java\\OrigamiEditor\\src\\main\\resources\\com\\nyarstot\\origamieditor\\highlightings\\java.xml"));
+                new CodeHighlightDocument(new File("C:\\Users\\winte\\source\\Java\\OrigamiEditor\\src\\main\\resources\\com\\nyarstot\\origamieditor\\highlighting\\java.xml"));
 
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(800, 600);
@@ -71,8 +64,8 @@ public class MainWindow {
         borderPane.setBottom(bottomToolBar);
 
         scene = new Scene(borderPane);
-        //scene.getStylesheets().add("com/nyarstot/origamieditor/editor/OrigamiDark.css");
-        scene.getStylesheets().add(OrigamiEditorApp.class.getResource("highlightings/java.css").toExternalForm());
+        //scene.getStylesheets().add(OrigamiEditorApp.class.getResource("editor/OrigamiDarkTheme.css").toExternalForm());
+        scene.getStylesheets().add(OrigamiEditorApp.class.getResource("highlighting/java.css").toExternalForm());
     }
 
     private void setMenuBarAndToolBarButtons() {
@@ -97,6 +90,7 @@ public class MainWindow {
         MenuItem exitItem   = new MenuItem("Exit");
         exitItem.setOnAction(e -> {
             System.exit(0);
+            this.executor.shutdown();
         });
         fileMenu.getItems().addAll(
                 newItem,
@@ -142,5 +136,9 @@ public class MainWindow {
 
     Scene getScene() {
         return this.scene;
+    }
+
+    ExecutorService getExecutor() {
+        return this.executor;
     }
 }

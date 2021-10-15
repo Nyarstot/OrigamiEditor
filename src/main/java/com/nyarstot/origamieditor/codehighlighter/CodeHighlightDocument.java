@@ -22,9 +22,6 @@ public class CodeHighlightDocument {
     private final CodeHighlightDocumentParser parser = new CodeHighlightDocumentParser();
 
     // Public
-    public CodeHighlightDocument() {
-
-    }
     public CodeHighlightDocument(File file) {
         load(file);
     }
@@ -43,6 +40,6 @@ public class CodeHighlightDocument {
         this.highlightKeywords      = parser.getKeywords();
         this.highlightStyle         = parser.getStyle();
 
-        this.highlightPattern       = parser.getHighlightPattern();
+        this.highlightPattern       = CodeHighlightDocumentParser.getHighlightPattern();
     }
 }

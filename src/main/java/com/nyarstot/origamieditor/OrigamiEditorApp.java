@@ -22,6 +22,9 @@ public class OrigamiEditorApp extends Application {
         primaryStage.show();
     }
 
+    @Override
+    public void stop() { mainWindow.getExecutor().shutdown(); }
+
     public static void main(String[] args) {
         launch(args);
     }

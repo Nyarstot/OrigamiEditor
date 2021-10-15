@@ -26,13 +26,13 @@ public class CodeHighlightDocumentParser {
     private String[]    keywords;
     private Path        style;
 
-    private String keywordPattern;
-    private String parenPattern;
-    private String bracePattern;
-    private String bracketPattern;
-    private String semicolonPattern;
-    private String stringPattern;
-    private String commentPattern;
+    private static String keywordPattern;
+    private static String parenPattern;
+    private static String bracePattern;
+    private static String bracketPattern;
+    private static String semicolonPattern;
+    private static String stringPattern;
+    private static String commentPattern;
 
     private void xmlArrayDataToFileMeta (String nodeName, Node node) {
         if (node.getNodeName().equals(nodeName)) {
@@ -53,12 +53,12 @@ public class CodeHighlightDocumentParser {
     private void parseHighlightRules(Node node) {
         if (Objects.equals(node.getNodeName(), "highlightPatterns")) {
             Element element = (Element) node;
-            this.parenPattern = element.getElementsByTagName("parenPattern").item(0).getTextContent();
-            this.bracePattern = element.getElementsByTagName("bracePattern").item(0).getTextContent();
-            this.bracketPattern = element.getElementsByTagName("bracketPattern").item(0).getTextContent();
-            this.semicolonPattern = element.getElementsByTagName("semicolonPattern").item(0).getTextContent();
-            this.stringPattern = element.getElementsByTagName("stringPattern").item(0).getTextContent();
-            this.commentPattern = element.getElementsByTagName("commentPattern").item(0).getTextContent();
+            parenPattern = element.getElementsByTagName("parenPattern").item(0).getTextContent();
+            bracePattern = element.getElementsByTagName("bracePattern").item(0).getTextContent();
+            bracketPattern = element.getElementsByTagName("bracketPattern").item(0).getTextContent();
+            semicolonPattern = element.getElementsByTagName("semicolonPattern").item(0).getTextContent();
+            stringPattern = element.getElementsByTagName("stringPattern").item(0).getTextContent();
+            commentPattern = element.getElementsByTagName("commentPattern").item(0).getTextContent();
         }
     }
 
@@ -78,22 +78,16 @@ public class CodeHighlightDocumentParser {
     public String[] getKeywords()       { return this.keywords; }
     public String[] getExtensions()     { return this.extensions; }
     public Path getStyle()              { return this.style; }
-    public String getParenPattern()     { return this.parenPattern; }
-    public String getBracePattern()     { return this.bracePattern; }
-    public String getBracketPattern()   { return this.bracketPattern; }
-    public String getSemicolonPattern() { return this.semicolonPattern; }
-    public String getStringPattern()    { return this.stringPattern; }
-    public String getCommentPattern()   { return this.commentPattern; }
 
-    public Pattern getHighlightPattern() {
+    public static Pattern getHighlightPattern() {
         return Pattern.compile(
-                "(?<KEYWORD>" + this.keywordPattern + ")"
-                        + "|(?<PAREN>" + this.parenPattern + ")"
-                        + "|(?<BRACE>" + this.bracePattern + ")"
-                        + "|(?<BRACKET>" + this.bracketPattern + ")"
-                        + "|(?<SEMICOLON>" + this.semicolonPattern + ")"
-                        + "|(?<STRING>" + this.stringPattern + ")"
-                        + "|(?<COMMENT>" + this.commentPattern + ")"
+                "(?<KEYWORD>" + keywordPattern + ")"
+                        + "|(?<PAREN>" + parenPattern + ")"
+                        + "|(?<BRACE>" + bracePattern + ")"
+                        + "|(?<BRACKET>" + bracketPattern + ")"
+                        + "|(?<SEMICOLON>" + semicolonPattern + ")"
+                        + "|(?<STRING>" + stringPattern + ")"
+                        + "|(?<COMMENT>" + commentPattern + ")"
         );
     }
     public void parse(File xmlFile) {
@@ -120,7 +114,7 @@ public class CodeHighlightDocumentParser {
                 }
             }
 
-            this.keywordPattern = "\\b(" + String.join("|", this.keywords) + ")\\b";
+            keywordPattern = "\\b(" + String.join("|", this.keywords) + ")\\b";
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }

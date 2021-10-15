@@ -1,0 +1,55 @@
+.menu-bar {
+    -fx-background-color: #3c3c3c;
+}
+
+.menu-bar .label {
+    -fx-text-fill: white;
+}
+
+.menu:hover {
+    -fx-background-color: #4b6eaf;
+}
+
+.context-menu {
+    -fx-background-color: #1b1b1b;
+    -fx-border-color: #535353;
+}
+
+.menu-bar .menu-button:hover, .menu-bar .menu-button:focused, .menu-bar .menu-button:showing {
+    -fx-background: #4b6eaf;
+    -fx-text-fill: white;
+}
+
+.context-menu .menu-item:hover {
+    -fx-background-color: #4b6eaf;
+}
+
+.tool-bar {
+    -fx-background-color: #3c3c3c;
+}
+
+.split-pane {
+    -fx-background-color: #252526;
+    -fx-margin-color: red;
+}
+
+.split-pane .split-pane-divider {
+    -fx-color: transparent;
+    -fx-background-color: #222222;
+    -fx-padding: 0 2px 0 2px;
+}
+
+.code-area {
+    -fx-control-inner-background: #1b1b1b;
+    -fx-font-size: 12pt;
+    -fx-font-family: "Consolas";
+    -fx-background-insets: 1;
+}
+
+.lineno {
+    -fx-background-color: #1b1b1b;
+}
+
+.paragraph-box:has-caret {
+    -fx-background-color: #3c3c3c;
+}
