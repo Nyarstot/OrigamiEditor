@@ -3,9 +3,9 @@ package com.nyarstot.origamieditor;
 import com.nyarstot.origamieditor.codehighlighter.CodeHighlightDocument;
 import com.nyarstot.origamieditor.codehighlighter.CodeHighlighterAsync;
 import com.nyarstot.origamieditor.editor.OrigamiTextArea;
+import com.nyarstot.origamieditor.folderview.OrigamiFolderView;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -52,8 +52,11 @@ public class MainWindow {
         codeHighlighter.loadHighlightPattern(codeHighlightDocument.getHighlightPattern());
         codeHighlighter.cleanUpWhenDone(textArea);
 
+        OrigamiFolderView folderView = new OrigamiFolderView(this);
+        folderView.loadDirectory(new File("./"));
+
         SplitPane splitPane = new SplitPane();
-        splitPane.getItems().add(new AnchorPane());
+        splitPane.getItems().add(folderView.getNode());
         splitPane.getItems().add(textArea.getNode());
 
         borderPane.setCenter(splitPane);
@@ -79,6 +82,10 @@ public class MainWindow {
         openItem.setOnAction(e -> {
             this.textArea.loadFile();
         });
+        MenuItem openFolderItem   = new MenuItem("Open folder");
+        openItem.setOnAction(e -> {
+            this.textArea.loadFile();
+        });
         MenuItem saveItem   = new MenuItem("Save");
         saveItem.setOnAction(e -> {
             this.textArea.saveFile();
@@ -95,6 +102,7 @@ public class MainWindow {
         fileMenu.getItems().addAll(
                 newItem,
                 openItem,
+                openFolderItem,
                 saveItem,
                 saveAsItem,
                 exitItem);

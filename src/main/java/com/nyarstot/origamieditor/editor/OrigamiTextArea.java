@@ -25,7 +25,6 @@ public class OrigamiTextArea {
 
         codeArea = new CodeArea();
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
-
     }
 
     public void newFile() {
