@@ -19,7 +19,7 @@ public class OrigamiTextArea {
     private final OrigamiFileControllerFactory controllerFactory;
 
     // Public
-    public OrigamiTextArea(MainWindow mainWindow) {
+    public OrigamiTextArea() {
         currentTextFile = new TextFile();
         controllerFactory = new OrigamiFileControllerFactory();
 
@@ -32,12 +32,12 @@ public class OrigamiTextArea {
         this.currentTextFile.clear();
     }
 
-    public void loadFile() {
-        FileChooser fileChooser = new FileChooser();
+    public void loadFile(File file) {
+        /*FileChooser fileChooser = new FileChooser();
 
         fileChooser.setTitle("Open file");
         fileChooser.setInitialDirectory(new File("./"));
-        File file = fileChooser.showOpenDialog(null);
+        File file = fileChooser.showOpenDialog(null);*/
 
         if (file != null) {
             IOResult<TextFile> ioResult = controllerFactory.load(file.toPath());

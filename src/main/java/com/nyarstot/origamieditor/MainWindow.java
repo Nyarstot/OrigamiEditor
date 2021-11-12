@@ -4,6 +4,7 @@ import com.nyarstot.origamieditor.codehighlighter.CodeHighlightDocument;
 import com.nyarstot.origamieditor.codehighlighter.CodeHighlighterAsync;
 import com.nyarstot.origamieditor.editor.OrigamiTextArea;
 import com.nyarstot.origamieditor.folderview.OrigamiFolderView;
+import com.nyarstot.origamieditor.tabpane.OrigamiTabPane;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -17,7 +18,9 @@ public class MainWindow {
     // Private
 
     private final Scene scene;
-    private final OrigamiTextArea textArea;
+    //private final OrigamiTextArea textArea;
+    private final OrigamiTabPane tabPane;
+    private final OrigamiFolderView folderView;
     private final MenuBar menuBar;
     private final ToolBar toolBar;
     private final ExecutorService executor;
@@ -47,17 +50,21 @@ public class MainWindow {
 
         // Border pane center
 
-        textArea = new OrigamiTextArea(this);
+        /*textArea = new OrigamiTextArea();
         codeHighlighter = new CodeHighlighterAsync(textArea, executor);
         codeHighlighter.loadHighlightPattern(codeHighlightDocument.getHighlightPattern());
-        codeHighlighter.cleanUpWhenDone(textArea);
+        codeHighlighter.cleanUpWhenDone(textArea);*/
 
-        OrigamiFolderView folderView = new OrigamiFolderView(this);
-        folderView.loadDirectory(new File("./"));
+        tabPane = new OrigamiTabPane();
+
+        folderView = new OrigamiFolderView(this);
 
         SplitPane splitPane = new SplitPane();
         splitPane.getItems().add(folderView.getNode());
-        splitPane.getItems().add(textArea.getNode());
+        splitPane.getItems().add(tabPane.getNode());
+        //splitPane.getItems().add(textArea.getNode());
+
+        splitPane.setDividerPositions(0.25);
 
         borderPane.setCenter(splitPane);
 
@@ -76,25 +83,25 @@ public class MainWindow {
         Menu fileMenu       = new Menu("File");
         MenuItem newItem    = new MenuItem("New");
         newItem.setOnAction(e -> {
-            this.textArea.newFile();
+            //this.textArea.newFile();
         });
-        MenuItem openItem   = new MenuItem("Open");
+        MenuItem openItem = new MenuItem("Open");
         openItem.setOnAction(e -> {
-            this.textArea.loadFile();
+            //this.textArea.loadFile();
         });
-        MenuItem openFolderItem   = new MenuItem("Open folder");
-        openItem.setOnAction(e -> {
-            this.textArea.loadFile();
+        MenuItem openFolderItem = new MenuItem("Open folder");
+        openFolderItem.setOnAction(e -> {
+            this.folderView.openFolder();
         });
-        MenuItem saveItem   = new MenuItem("Save");
+        MenuItem saveItem = new MenuItem("Save");
         saveItem.setOnAction(e -> {
-            this.textArea.saveFile();
+            //this.textArea.saveFile();
         });
         MenuItem saveAsItem = new MenuItem("Save as");
         saveAsItem.setOnAction(e -> {
-            this.textArea.saveFileAs();
+            //this.textArea.saveFileAs();
         });
-        MenuItem exitItem   = new MenuItem("Exit");
+        MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction(e -> {
             System.exit(0);
             this.executor.shutdown();

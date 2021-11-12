@@ -4,6 +4,7 @@ import com.nyarstot.origamieditor.MainWindow;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.stage.DirectoryChooser;
 
 import java.io.File;
 import java.util.Objects;
@@ -32,6 +33,14 @@ public class OrigamiFolderView {
 
     public OrigamiFolderView(MainWindow mainWindow) {
         treeView = new TreeView<String>();
+    }
+
+    public void openFolder() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setInitialDirectory(new File("./"));
+
+        File choice = directoryChooser.showDialog(null);
+        loadDirectory(choice);
     }
 
     public void loadDirectory(File dir) {
