@@ -2,7 +2,6 @@ package com.nyarstot.origamieditor.codehighlighter;
 
 import com.nyarstot.origamieditor.editor.OrigamiTextArea;
 import javafx.concurrent.Task;
-import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 import org.reactfx.Subscription;

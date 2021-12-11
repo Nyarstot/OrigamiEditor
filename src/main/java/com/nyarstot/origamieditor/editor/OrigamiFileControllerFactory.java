@@ -1,6 +1,5 @@
 package com.nyarstot.origamieditor.editor;
 
-import com.nyarstot.origamieditor.editor.TextFile;
 import com.nyarstot.origamieditor.util.IOResult;
 
 import java.io.IOException;

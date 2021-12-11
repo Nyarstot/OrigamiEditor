@@ -5,7 +5,7 @@ import javafx.scene.control.Tab;
 
 import java.io.File;
 
-public class OrigamiTab {
+public class OrigamiTab{
 
     private final OrigamiTextArea textArea;
     private final Tab thisTab;
@@ -28,5 +28,6 @@ public class OrigamiTab {
     }
 
     public Tab getTab() { return thisTab; }
+    public OrigamiTextArea getTextArea() { return this.textArea; }
 
 }

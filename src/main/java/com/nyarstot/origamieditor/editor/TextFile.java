@@ -32,6 +32,7 @@ public class TextFile {
     /* Class methods */
 
     public Path getFilePath()           { return this.filePath; }
+    public String getFileName()         { return this.filePath.getFileName().toString(); }
     public List<String> getContent()    { return this.content; }
 
     public void clear()

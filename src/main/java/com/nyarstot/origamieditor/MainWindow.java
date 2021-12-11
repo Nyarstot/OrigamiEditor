@@ -2,13 +2,14 @@ package com.nyarstot.origamieditor;
 
 import com.nyarstot.origamieditor.codehighlighter.CodeHighlightDocument;
 import com.nyarstot.origamieditor.codehighlighter.CodeHighlighterAsync;
-import com.nyarstot.origamieditor.editor.OrigamiTextArea;
 import com.nyarstot.origamieditor.folderview.OrigamiFolderView;
+import com.nyarstot.origamieditor.markdown.MarkdownWindow;
 import com.nyarstot.origamieditor.tabpane.OrigamiTabPane;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -18,14 +19,14 @@ public class MainWindow {
     // Private
 
     private final Scene scene;
-    //private final OrigamiTextArea textArea;
     private final OrigamiTabPane tabPane;
     private final OrigamiFolderView folderView;
     private final MenuBar menuBar;
     private final ToolBar toolBar;
     private final ExecutorService executor;
+    private final SplitPane splitPane;
 
-    private CodeHighlightDocument codeHighlightDocument;
+    private final CodeHighlightDocument codeHighlightDocument;
     private CodeHighlighterAsync codeHighlighter;
 
     // Public
@@ -50,19 +51,13 @@ public class MainWindow {
 
         // Border pane center
 
-        /*textArea = new OrigamiTextArea();
-        codeHighlighter = new CodeHighlighterAsync(textArea, executor);
-        codeHighlighter.loadHighlightPattern(codeHighlightDocument.getHighlightPattern());
-        codeHighlighter.cleanUpWhenDone(textArea);*/
-
         tabPane = new OrigamiTabPane();
 
         folderView = new OrigamiFolderView(this);
 
-        SplitPane splitPane = new SplitPane();
+        splitPane = new SplitPane();
         splitPane.getItems().add(folderView.getNode());
         splitPane.getItems().add(tabPane.getNode());
-        //splitPane.getItems().add(textArea.getNode());
 
         splitPane.setDividerPositions(0.25);
 
@@ -75,7 +70,6 @@ public class MainWindow {
 
         scene = new Scene(borderPane);
         //scene.getStylesheets().add(OrigamiEditorApp.class.getResource("editor/OrigamiDarkTheme.css").toExternalForm());
-        scene.getStylesheets().add(OrigamiEditorApp.class.getResource("highlighting/java.css").toExternalForm());
     }
 
     private void setMenuBarAndToolBarButtons() {
@@ -83,11 +77,22 @@ public class MainWindow {
         Menu fileMenu       = new Menu("File");
         MenuItem newItem    = new MenuItem("New");
         newItem.setOnAction(e -> {
-            //this.textArea.newFile();
+            this.tabPane.addNewTab("untitled");
         });
         MenuItem openItem = new MenuItem("Open");
         openItem.setOnAction(e -> {
-            //this.textArea.loadFile();
+            FileChooser fileChooser = new FileChooser();
+
+            fileChooser.setTitle("Open file");
+            fileChooser.setInitialDirectory(new File("./"));
+            File file = fileChooser.showOpenDialog(null);
+
+            if (!tabPane.isTabAlreadyExists(file)) {
+                tabPane.addNewTab(file.getName().toString(), file);
+                folderView.loadDirectory(new File(file.getParent()));
+            } else {
+                tabPane.tabCallback();
+            }
         });
         MenuItem openFolderItem = new MenuItem("Open folder");
         openFolderItem.setOnAction(e -> {
@@ -95,11 +100,11 @@ public class MainWindow {
         });
         MenuItem saveItem = new MenuItem("Save");
         saveItem.setOnAction(e -> {
-            //this.textArea.saveFile();
+            tabPane.getSelectedTab().getTextArea().saveFile();
         });
         MenuItem saveAsItem = new MenuItem("Save as");
         saveAsItem.setOnAction(e -> {
-            //this.textArea.saveFileAs();
+            tabPane.getSelectedTab().getTextArea().saveFileAs();
         });
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction(e -> {
@@ -140,7 +145,26 @@ public class MainWindow {
 
         MenuButton modeMenuButton = new MenuButton("Work mode");
         MenuItem itemGit    = new MenuItem("Git README");
+        itemGit.setOnAction(event -> {
+            modeMenuButton.setText("Git README");
+            if (splitPane.getItems().size() == 2) {
+                //MarkdownWindow markdownWindow = new MarkdownWindow();
+                //this.splitPane.getItems().add(markdownWindow.getNode());
+            }
+        });
         MenuItem itemCode   = new MenuItem("Code writing");
+        itemCode.setOnAction(event -> {
+            modeMenuButton.setText("Code writing");
+            if (splitPane.getItems().size() > 2) {
+                this.splitPane.getItems().remove(2);
+            }
+
+            codeHighlighter = new CodeHighlighterAsync(tabPane.getSelectedTab().getTextArea(), executor);
+            codeHighlighter.loadHighlightPattern(codeHighlightDocument.getHighlightPattern());
+            codeHighlighter.cleanUpWhenDone(tabPane.getSelectedTab().getTextArea());
+
+            scene.getStylesheets().add(OrigamiEditorApp.class.getResource("highlighting/java.css").toExternalForm());
+        });
         modeMenuButton.getItems().addAll(
                 itemGit,
                 itemCode);

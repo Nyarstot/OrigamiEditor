@@ -26,6 +26,14 @@ public class OrigamiEditorApp extends Application {
     public void stop() { mainWindow.getExecutor().shutdown(); }
 
     public static void main(String[] args) {
-        launch(args);
+        try {
+            launch(args);
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+        }
+        finally {
+            System.exit(0);
+        }
     }
 }

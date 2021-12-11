@@ -1,6 +1,5 @@
 package com.nyarstot.origamieditor.editor;
 
-import com.nyarstot.origamieditor.MainWindow;
 import com.nyarstot.origamieditor.util.IOResult;
 import javafx.scene.Node;
 import javafx.stage.FileChooser;
@@ -33,12 +32,6 @@ public class OrigamiTextArea {
     }
 
     public void loadFile(File file) {
-        /*FileChooser fileChooser = new FileChooser();
-
-        fileChooser.setTitle("Open file");
-        fileChooser.setInitialDirectory(new File("./"));
-        File file = fileChooser.showOpenDialog(null);*/
-
         if (file != null) {
             IOResult<TextFile> ioResult = controllerFactory.load(file.toPath());
             if (ioResult.s_ok() && ioResult.hasData()) {
@@ -81,6 +74,8 @@ public class OrigamiTextArea {
     public String getText() {
         return this.codeArea.getText();
     }
+    public String getCurrentFileName() { return currentTextFile.getFileName(); }
+    public String getCurrentFilePath() { return currentTextFile.getFilePath().toString(); }
 
     public Node getNode() { return (new VirtualizedScrollPane<>(this.codeArea)); }
     public CodeArea getCodeArea() { return this.codeArea; };
